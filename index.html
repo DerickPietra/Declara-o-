@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mensagens para Pietra</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(to bottom, #1a237e, #283593);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+        text-align: center;
+    }
+    .container {
+        max-width: 600px;
+        background-color: rgba(0,0,50,0.7);
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    h1 {
+        margin-bottom: 20px;
+        font-family: 'Georgia', serif;
+    }
+    #mensagem {
+        font-size: 1.2em;
+        margin: 20px 0;
+    }
+    .timer {
+        font-size: 1.5em;
+        margin: 10px 0;
+        font-weight: bold;
+    }
+    input {
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        margin-top: 10px;
+        font-size: 1em;
+        text-align: center;
+    }
+    button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 10px;
+        background-color: #5c6bc0;
+        color: white;
+        font-size: 1em;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+    button:hover {
+        background-color: #7986cb;
+    }
+    .romantic-heart {
+        font-size: 2em;
+        margin-top: 20px;
+        animation: beat 1s infinite;
+    }
+    @keyframes beat {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Mensagens para Pietra 💙</h1>
+    <div id="mensagem">Carregando...</div>
+    <div class="timer">Tempo para próxima mensagem: <span id="dailyTimer">24:00:00</span></div>
+    <div class="timer">Tempo total: <span id="totalTimer">168:00:00</span></div>
+    <div>
+        <input type="password" id="senha" placeholder="Digite a senha para avançar">
+        <button onclick="verificarSenha()">Liberar</button>
+    </div>
+    <div class="romantic-heart">❤️</div>
+</div>
+
+<script>
+const mensagens = [
+`Amor, nesses primeiros 24 horas sem você, estou sentindo tanta falta do seu cheiro, do seu perfume que me envolve e me faz sentir perto de você mesmo quando estamos longe. Já começo a contar cada segundo até te ver de novo.`,
+`Hoje estou sentindo saudade de olhar nos seus lindos olhos castanhos e me perder neles como sempre faço. É incrível como só um olhar seu consegue acalmar meu coração.`,
+`Meu amor, estou sentindo falta do seu abraço apertado, daquele que me deixa seguro e feliz ao mesmo tempo. Não vejo a hora de te envolver de novo e não soltar nunca mais.`,
+`Hoje estou sentindo falta de cada selinho seu, das minhas mordidinhas carinhosas em você, e até das minhas pequenas crises de atasanamento perto de você. Nossa rotina me faz falta mesmo nos detalhes mais bobos.`,
+`Estou sentindo falta das nossas conversas, das risadas, das brincadeiras de irritar um ao outro. E claro, das nossas discussões sobre a Helena e o Henrique, e até de julgar gordos juntos… tudo com você é especial.`,
+`Hoje estou lembrando com saudade de colocar o dedo no seu umbiguinho só pra te irritar (ou te fazer rir), de te abraçar e brincar como só nós sabemos. A falta que você faz dói e aquece ao mesmo tempo. O tempo tá acabando e logo vou estar do seu lado de novo…`,
+`Amor, falta tão pouco agora… estou sentindo falta de cada detalhe seu que me faz te amar mais: o abraço, os selinhos, o olhar, o cheiro, as conversas e até as nossas loucuras. Logo estamos juntos de novo e prometo aproveitar cada segundo.`
+];
+
+let currentDay = 0;
+let dailySeconds = 24 * 60 * 60;
+let totalSeconds = 7 * 24 * 60 * 60;
+
+function updateTimers() {
+    let dHours = Math.floor(dailySeconds / 3600);
+    let dMinutes = Math.floor((dailySeconds % 3600) / 60);
+    let dSeconds = dailySeconds % 60;
+    document.getElementById('dailyTimer').textContent = `${dHours.toString().padStart(2,'0')}:${dMinutes.toString().padStart(2,'0')}:${dSeconds.toString().padStart(2,'0')}`;
+
+    let tHours = Math.floor(totalSeconds / 3600);
+    let tMinutes = Math.floor((totalSeconds % 3600) / 60);
+    let tSeconds = totalSeconds % 60;
+    document.getElementById('totalTimer').textContent = `${tHours.toString().padStart(2,'0')}:${tMinutes.toString().padStart(2,'0')}:${tSeconds.toString().padStart(2,'0')}`;
+}
+
+function showMessage() {
+    document.getElementById('mensagem').textContent = mensagens[currentDay];
+}
+
+function verificarSenha() {
+    const input = document.getElementById('senha').value;
+    if(input === '2106') {
+        if(currentDay < mensagens.length - 1) {
+            currentDay++;
+            dailySeconds = 24 * 60 * 60;
+            showMessage();
+            document.getElementById('senha').value = '';
+        } else {
+            alert('Você já está na última mensagem!');
+        }
+    } else {
+        alert('Senha incorreta!');
+    }
+}
+
+showMessage();
+updateTimers();
+
+setInterval(() => {
+    if(dailySeconds > 0) dailySeconds--;
+    if(totalSeconds > 0) totalSeconds--;
+
+    if(dailySeconds === 0 && currentDay < mensagens.length -1) {
+        currentDay++;
+        dailySeconds = 24 * 60 * 60;
+        showMessage();
+    }
+
+    updateTimers();
+}, 1000);
+</script>
+</body>
+</html>
